@@ -1,7 +1,7 @@
 const Login = () => {
   return (
     <div>
-      <form className="p-2 flex flex-col items-start">
+      <form action="/api/login" method="post" className="p-2 flex flex-col items-start">
         <label htmlFor="username" className="p-2">
           Username:{" "}
           <input
