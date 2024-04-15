@@ -3,7 +3,7 @@ import Root from "./routes/root";
 import Login from "./routes/login";
 import Register from "./routes/register";
 import ErrorPage from "./routes/errorPage";
-import Auth from "./routes/auth";
+import Content from "./routes/content";
 
 const App = () => {
   return (
@@ -11,24 +11,21 @@ const App = () => {
       <Route
         path="/"
         element={<Root />}
-      />
-      <Route
-        path="/auth"
-        element={<Auth />}
       >
         <Route
-          path="login"
+          index
           element={<Login />}
         />
         <Route
           path="register"
           element={<Register />}
         />
+        <Route
+          path="*"
+          element={<ErrorPage />}
+        />
       </Route>
-      <Route
-        path="*"
-        element={<ErrorPage />}
-      />
+      <Route path="/content" element={<Content/>}/>
     </Routes>
   );
 };
