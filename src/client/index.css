@@ -3,15 +3,15 @@
 @tailwind utilities;
 
 .btn {
-    @apply bg-blue-500 p-3 m-2 mx-auto hover:bg-blue-600 rounded-lg w-full text-white
+    @apply bg-blue-500 p-3 m-2 mx-auto hover:bg-blue-600 rounded-lg text-white
 }
 
 .card {
-    @apply p-5 pt-8 w-1/2 rounded-md border-2 flex flex-col;
+    @apply p-5 pt-8 w-1/2 rounded-md border-2 flex flex-col max-w-96 min-w-64;
 }
 
 .error {
-    @apply bg-red-200 w-full p-4 rounded-md text-red-600 text-lg
+    @apply bg-red-200 m-2 w-full p-4 border-2 border-gray-300 rounded-md text-red-950 text-lg
 }
 
 .input {

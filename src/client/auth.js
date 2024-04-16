@@ -6,11 +6,10 @@ export async function createUser(username, password) {
       username: username,
       password: password,
     });
-    return { success: true };
+    return {username: data.username}
   } catch (err) {
-    return { success: false };
+    throw err;
   }
-
   return;
 }
 export async function login(username, password) {
@@ -19,8 +18,8 @@ export async function login(username, password) {
       username: username,
       password: password,
     });
-    return { username: username, success: true };
+    return {username: data.username}
   } catch (err) {
-    return { success: false };
+    throw err;
   }
 }

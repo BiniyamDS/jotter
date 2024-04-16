@@ -23,7 +23,7 @@ function authenticate(req, res, next) {
   // console.log(username, password);
   let { found, pass } = checkUsername(username);
   if (found && password === pass)
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ username: username, success: true });
   res.status(403).json({ success: false });
 }
 

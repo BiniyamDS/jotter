@@ -10,19 +10,25 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
 
-	async function signIn(username, password) {
-		// console.log('Signed in')
-		return  await login(username, password)
-	}
+  async function signIn(name, password) {
+    // console.log('Signed in')
+    const { username } = await login(name, password);
+    setCurrentUser({ username: username });
+  }
 
-	async function register(username, password) {
-		return await createUser(username, password)
-	}
+  function logout() {
+    return setCurrentUser()
+  }
+
+  async function register(username, password) {
+    return await createUser(username, password);
+  }
 
   const value = {
     currentUser,
-		signIn,
-		register
+    signIn,
+    register,
+    logout
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

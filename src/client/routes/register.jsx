@@ -10,6 +10,7 @@ const Register = () => {
   const passwordConfirmRef = useRef();
   const [error, setError] = useState();
   const { register } = useAuth();
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate();
   async function handleSubmit(e) {
@@ -21,15 +22,15 @@ const Register = () => {
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Passwords do not match!");
     }
-    const { success } = await register(
-      nameRef.current.value,
-      passwordRef.current.value
-    );
-    if (success) {
-      navigate("/login");
-    } else {
-      setError("Username already exists!");
+    try {
+      await register(nameRef.current.value, passwordRef.current.value);
+      setLoading(true)
+      navigate('/login')
+    } catch {
+      setError("Failed to create account");
     }
+
+    setLoading(false)
   }
 
   return (
@@ -64,7 +65,8 @@ const Register = () => {
           />
           <button
             type="submit"
-            className="btn"
+            className="btn w-full"
+            disabled={loading}
             onClick={handleSubmit}
           >
             Sign up
@@ -75,7 +77,7 @@ const Register = () => {
             Already have an account?{" "}
             <Link
               className="text-blue-700 hover:underline"
-              to="/"
+              to="/login"
             >
               Log in
             </Link>

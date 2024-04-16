@@ -9,6 +9,7 @@ const Login = () => {
   const passwordRef = useRef();
   const [error, setError] = useState();
   const { signIn } = useAuth();
+  const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate();
   async function handleSubmit(e) {
@@ -17,15 +18,16 @@ const Login = () => {
     if (!nameRef.current.value || !passwordRef.current.value) {
       return setError("Please input username and password");
     }
-    const { success } = await signIn(
-      nameRef.current.value,
-      passwordRef.current.value
-    );
-    if (success) {
-      navigate("/content");
-    } else {
+
+    try {
+      await signIn(nameRef.current.value, passwordRef.current.value);
+      setLoading(true)
+      navigate('/')
+    } catch {
       setError("Incorrect username or password");
     }
+
+    setLoading(false)
   }
 
   return (
@@ -34,11 +36,7 @@ const Login = () => {
         <h1 className="text-4xl m-2 mx-auto">Login</h1>
         {error && <span className="error">{error}</span>}
         <form className="p-2 flex flex-col">
-          <label
-            htmlFor="username"
-          >
-            Username
-          </label>
+          <label htmlFor="username">Username</label>
           <input
             type="text"
             name="username"
@@ -56,7 +54,7 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="btn"
+            className="btn w-full"
             onClick={handleSubmit}
           >
             Log in

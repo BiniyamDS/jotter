@@ -4,7 +4,8 @@ a simple blogging application where users can register, login, setup their blog 
 ## Tasks to do
 - [x] Make a card component to wrap login and register page
 - [x] Fix sendStatus
-- [ ] Make all routes protected
-- [ ] Implement log out
+- [x] Make all routes protected
+- [x] Implement log out
+- [ ] Paint dashboard
 - [ ] Implement JWT
 - [ ] Advanced features...

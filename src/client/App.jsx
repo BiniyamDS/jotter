@@ -3,17 +3,20 @@ import Root from "./routes/root";
 import Login from "./routes/login";
 import Register from "./routes/register";
 import ErrorPage from "./routes/errorPage";
-import Content from "./routes/content";
 import { AuthProvider } from "./contexts/AuthContext";
+import PrivateRoutes from "./components/PrivateRoute";
 
 const App = () => {
   return (
     <AuthProvider>
       <Routes>
-        <Route
-          path="/"
-          element={<Root />}
-        />
+        <Route element={<PrivateRoutes />}>
+          <Route
+            path="/"
+            element={<Root />}
+            exact
+          />
+        </Route>
         <Route
           path="/login"
           element={<Login />}
@@ -25,10 +28,6 @@ const App = () => {
         <Route
           path="*"
           element={<ErrorPage />}
-        />
-        <Route
-          path="/content"
-          element={<Content />}
         />
       </Routes>
     </AuthProvider>
