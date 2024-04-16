@@ -1,19 +1,14 @@
-import { Link, Outlet } from "react-router-dom";
+// import { Link, Outlet } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 const Root = () => {
-  return (
-    <div className="flex justify-center items-center h-screen">
-      <div className="card">
-        <div className="mx-auto">
-          
-          <h1 className="text-xl text-gray-500">Welcome to Jotter!</h1>
-        </div>
-        <Outlet />
-      </div>
-    </div>
-  );
+  const navigate = useNavigate();
+  
+  useEffect(()=> {
+    navigate('/login')
+  }, [])
+  return <div>Root page!</div>;
 };
 
 export default Root;
-// /home/abugida/Documents/Projects/jotter/public/blog.svg
-// /home/abugida/Documents/Projects/jotter/src/client/routes/root.jsx

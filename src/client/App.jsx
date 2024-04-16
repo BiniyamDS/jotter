@@ -4,29 +4,34 @@ import Login from "./routes/login";
 import Register from "./routes/register";
 import ErrorPage from "./routes/errorPage";
 import Content from "./routes/content";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const App = () => {
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={<Root />}
-      >
+    <AuthProvider>
+      <Routes>
         <Route
-          index
+          path="/"
+          element={<Root />}
+        />
+        <Route
+          path="/login"
           element={<Login />}
         />
         <Route
-          path="register"
+          path="/register"
           element={<Register />}
         />
         <Route
           path="*"
           element={<ErrorPage />}
         />
-      </Route>
-      <Route path="/content" element={<Content/>}/>
-    </Routes>
+        <Route
+          path="/content"
+          element={<Content />}
+        />
+      </Routes>
+    </AuthProvider>
   );
 };
 
