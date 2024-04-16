@@ -3,8 +3,7 @@ a simple blogging application where users can register, login, setup their blog 
 
 ## Tasks to do
 - [ ] Make the /contents page a protected route
-- [ ] Change the login to a get request
-- [ ] Fix sendStatus
+- [x] Fix sendStatus
 - [ ] Implement log out
 - [ ] Implement JWT
 - [ ] Advanced features...

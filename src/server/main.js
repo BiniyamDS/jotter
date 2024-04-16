@@ -7,43 +7,36 @@ const app = express();
 app.use(express.json());
 // app.use(express.urlencoded({ extended: true }));
 
-app.get("/hello", (req, res) => {
-  res.send("Hello Vite + React!");
-});
-
 function createUser(req, res, next) {
   const { username, password } = req.body;
-  let exists = false;
+  const { found } = checkUsername(username);
 
-  users.forEach((user) => {
-    if (user.username === username) {
-      console.log("found it");
-      res.sendStatus(409);
-      exists = true;
-    }
-  });
+  if (found) return res.status(409).json({ success: false });
 
-  if (!exists) {
-    users.push({ username: username, password: password });
-    console.log(users);
-    res.sendStatus(201);
-  }
+  users.push({ username: username, password: password });
+  console.log(users);
+  res.status(201).json({ success: true });
 }
 
 function authenticate(req, res, next) {
   const { username, password } = req.body;
-  console.log(username, password)
-  let found = false
+  // console.log(username, password);
+  let { found, pass } = checkUsername(username);
+  if (found && password === pass)
+    return res.status(200).json({ success: true });
+  res.status(403).json({ success: false });
+}
 
+function checkUsername(name) {
+  let found = false;
+  let password = "";
   users.forEach((user) => {
-    if (user.username === username) {
-      if (user.password === password) {
-        res.sendStatus(200)
-        found = true
-      }
+    if (user.username === name) {
+      password = user.password;
+      found = true;
     }
   });
-  if (!found) res.sendStatus(403);
+  return { found: found, pass: password };
 }
 
 app.post("/api/login", authenticate);
