@@ -15,8 +15,8 @@ const Home = () => {
 
   return (
     <div>
-      <ul className="flex">
-        {posts && posts.map((post) => <PostCard post={post}/>)}
+      <ul className="flex flex-wrap w-3/4 mx-auto p-2">
+        {posts && posts.map((post) => <PostCard key={post.id} post={post} />)}
       </ul>
     </div>
   );

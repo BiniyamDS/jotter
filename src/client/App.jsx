@@ -8,21 +8,53 @@ import PrivateRoutes from "./components/PrivateRoute";
 import Home from "./routes/home";
 import YourPosts from "./routes/myPosts";
 import Profile from "./routes/profile";
+import Post from "./routes/post";
+import EditBlog from "./routes/editBlog";
 
 const App = () => {
   return (
     <AuthProvider>
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route path="/" element={<Root />} exact>
-            <Route index element={<Home />} />
-            <Route path="myPosts" element={<YourPosts />} />
-            <Route path="profile" element={<Profile />} />
+          <Route
+            path="/"
+            element={<Root />}
+            exact
+          >
+            <Route
+              index
+              element={<Home />}
+            />
+            <Route
+              path="myPosts"
+              element={<YourPosts />}
+            />
+            <Route
+              path="profile"
+              element={<Profile />}
+            />
+            <Route
+              path="post/:postId"
+              element={<Post />}
+            />
+            <Route
+              path="edit/:postId"
+              element={<EditBlog />}
+            />
           </Route>
         </Route>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+        <Route
+          path="/register"
+          element={<Register />}
+        />
+        <Route
+          path="*"
+          element={<ErrorPage />}
+        />
       </Routes>
     </AuthProvider>
   );

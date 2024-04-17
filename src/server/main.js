@@ -1,7 +1,8 @@
 import express from "express";
 import ViteExpress from "vite-express";
-import users from "./data.js";
-import { posts } from "./data.js";
+import users, { posts } from "./data.js";
+
+let postMem = structuredClone(posts)
 
 const app = express();
 
@@ -44,9 +45,49 @@ app.post("/api/login", authenticate);
 
 app.post("/api/register", createUser);
 
-app.get('/api/posts', (req, res) => {
-  res.json(posts)
-})
+app.get("/api/posts", (req, res) => {
+  res.json(postMem);
+});
+
+app.get("/api/post/:postId", getPost);
+
+function getPost(req, res, next) {
+  const { postId } = req.params;
+  // console.log(typeof postId);
+  const post = postMem.filter((post) => post.id === Number(postId));
+  // console.log(post)
+  if (post) return res.status(200).json({ post: post });
+  return res.status(404).json({ post: null });
+}
+
+app.put("/api/edit/:postId", editPost);
+
+function editPost(req, res, next) {
+  let { postId } = req.params;
+  const { title, text, image } = req.body;
+  // console.log(title);
+  postId = Number(postId)
+
+  const post = postMem.filter((post) => post.id === postId);
+
+  if (post) {
+    postMem = postMem.map((item) => {
+      if (item.id === postId) {
+        return {
+          id: item.id,
+          title: title,
+          image: image,
+          text: text,
+          createdBy: item.createdBy,
+          createdAt: new Date(),
+        };
+      }
+      return item
+    })
+    return res.status(200).json({ success: true });
+  }
+  return res.status(404).json({ success: false });
+}
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")
