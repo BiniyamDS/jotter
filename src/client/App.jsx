@@ -6,7 +6,7 @@ import ErrorPage from "./routes/errorPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import PrivateRoutes from "./components/PrivateRoute";
 import Home from "./routes/home";
-import Posts from "./routes/posts";
+import YourPosts from "./routes/myPosts";
 import Profile from "./routes/profile";
 
 const App = () => {
@@ -16,7 +16,7 @@ const App = () => {
         <Route element={<PrivateRoutes />}>
           <Route path="/" element={<Root />} exact>
             <Route index element={<Home />} />
-            <Route path="posts" element={<Posts />} />
+            <Route path="myPosts" element={<YourPosts />} />
             <Route path="profile" element={<Profile />} />
           </Route>
         </Route>

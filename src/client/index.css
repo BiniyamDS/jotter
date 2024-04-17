@@ -17,3 +17,7 @@
 .input {
     @apply border-2 my-2 h-10 w-full rounded-md text-slate-700 p-3
 }
+
+.nav {
+    @apply p-4 text-xl hover:bg-gray-400 h-full
+}

@@ -1,6 +1,7 @@
 import express from "express";
 import ViteExpress from "vite-express";
 import users from "./data.js";
+import { posts } from "./data.js";
 
 const app = express();
 
@@ -42,6 +43,10 @@ function checkUsername(name) {
 app.post("/api/login", authenticate);
 
 app.post("/api/register", createUser);
+
+app.get('/api/posts', (req, res) => {
+  res.json(posts)
+})
 
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")
