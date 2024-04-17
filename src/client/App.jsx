@@ -5,30 +5,24 @@ import Register from "./routes/register";
 import ErrorPage from "./routes/errorPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import PrivateRoutes from "./components/PrivateRoute";
+import Home from "./routes/home";
+import Posts from "./routes/posts";
+import Profile from "./routes/profile";
 
 const App = () => {
   return (
     <AuthProvider>
       <Routes>
         <Route element={<PrivateRoutes />}>
-          <Route
-            path="/"
-            element={<Root />}
-            exact
-          />
+          <Route path="/" element={<Root />} exact>
+            <Route index element={<Home />} />
+            <Route path="posts" element={<Posts />} />
+            <Route path="profile" element={<Profile />} />
+          </Route>
         </Route>
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-        <Route
-          path="/register"
-          element={<Register />}
-        />
-        <Route
-          path="*"
-          element={<ErrorPage />}
-        />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </AuthProvider>
   );
