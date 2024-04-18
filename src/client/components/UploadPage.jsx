@@ -2,12 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const Edit = ({ post }) => {
-  const { id, title, image, text } = post;
+const UploadPage = ({ post, handleAction }) => {
+  const { title, image, text, desc } = post;
   const [titleState, setTitle] = useState(title);
+  const [descState, setDesc] = useState(desc);
   const [imageState, setImage] = useState(image);
   const [textState, setText] = useState(text);
   const [error, setError] = useState(false);
+
+  const content = {
+    title: titleState,
+    image: imageState,
+    text: textState,
+    desc: descState,
+  }
 
   const navigate = useNavigate();
 
@@ -20,14 +28,13 @@ const Edit = ({ post }) => {
     }
 
     try {
-      await axios.put(`/api/edit/${id}`, {
-        title: titleState,
-        image: imageState,
-        text: textState,
-      });
-      navigate(`/post/${id}`)
-    } catch {
-      setError("Failed to edit");
+      // await axios.put(`/api/edit/${id}`, );
+      const {data} = await handleAction(content)
+      console.log(data)
+      navigate(`/post/${data.id}`)
+    } catch(err) {
+      console.log(err)
+      setError("Failed to upload content");
     }
   }
 
@@ -43,6 +50,13 @@ const Edit = ({ post }) => {
         type="text"
         value={titleState}
         onChange={(e) => setTitle(e.target.value)}
+      />
+      Description
+      <textarea
+        className="input !h-32 text-justify"
+        type="text"
+        value={descState}
+        onChange={(e) => setDesc(e.target.value)}
       />
       Image URL
       <input
@@ -76,4 +90,4 @@ const Edit = ({ post }) => {
   );
 };
 
-export default Edit;
+export default UploadPage;

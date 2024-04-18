@@ -1,12 +1,21 @@
 import { useLocation } from "react-router-dom";
-import Edit from "../components/Edit";
+import UploadPage from "../components/UploadPage";
+import axios from 'axios'
 
 const EditBlog = () => {
   const location = useLocation();
 
   const data = location.state;
-  
-  return <div className="flex"><Edit post={data}/></div>;
+
+  async function handleAction(content) {
+    return await axios.put(`/api/post/${data.id}`, content);
+  }
+
+  return (
+    <div className="flex">
+      <UploadPage post={data} handleAction={handleAction}/>
+    </div>
+  );
 };
 
 export default EditBlog;

@@ -2,7 +2,7 @@ import express from "express";
 import ViteExpress from "vite-express";
 import users, { posts } from "./data.js";
 
-let postMem = structuredClone(posts)
+let postMem = structuredClone(posts);
 
 const app = express();
 
@@ -60,13 +60,34 @@ function getPost(req, res, next) {
   return res.status(404).json({ post: null });
 }
 
-app.put("/api/edit/:postId", editPost);
+app.put("/api/post/:postId", editPost);
+
+app.post("/api/post/", createPost);
+
+function createPost(req, res, next) {
+  const { title, text, image, desc, user } = req.body;
+  const newId = Math.floor(Math.random() * 1000);
+  try {
+    postMem.push({
+      id: newId,
+      title: title,
+      image: image,
+      text: text,
+      createdBy: user,
+      desc: desc,
+      createdAt: new Date(),
+    });
+    return res.status(201).json({ success: true, id: newId });
+  } catch {
+    return res.status(404).json({ success: false });
+  }
+}
 
 function editPost(req, res, next) {
   let { postId } = req.params;
-  const { title, text, image } = req.body;
+  const { title, text, image, desc } = req.body;
   // console.log(title);
-  postId = Number(postId)
+  postId = Number(postId);
 
   const post = postMem.filter((post) => post.id === postId);
 
@@ -79,13 +100,13 @@ function editPost(req, res, next) {
           image: image,
           text: text,
           createdBy: item.createdBy,
-          desc: item.desc,
+          desc: desc,
           createdAt: new Date(),
         };
       }
-      return item
-    })
-    return res.status(200).json({ success: true });
+      return item;
+    });
+    return res.status(200).json({ success: true, id: postId });
   }
   return res.status(404).json({ success: false });
 }

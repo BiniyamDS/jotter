@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import PostCard from "../components/PostCard";
 import { useAuth } from "../contexts/AuthContext";
+import { Link } from "react-router-dom";
 
 const YourPosts = () => {
   const [posts, setPosts] = useState();
@@ -22,7 +23,7 @@ const YourPosts = () => {
   return (
     <div className="p-2 flex flex-col">
       <h1 className="text-4xl mx-auto">Your Posts</h1>
-      <button className="btn !ml-16 w-64">Create new post</button>
+      <Link to='/create' className="btn !ml-16">Create new post</Link>
       <ul className="mx-auto p-2">
         {posts &&
           (posts.length > 0 ? (

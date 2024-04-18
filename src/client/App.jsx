@@ -10,6 +10,7 @@ import YourPosts from "./routes/myPosts";
 import Profile from "./routes/profile";
 import Post from "./routes/post";
 import EditBlog from "./routes/editBlog";
+import CreateBlog from "./routes/createBlog";
 
 const App = () => {
   return (
@@ -32,6 +33,10 @@ const App = () => {
             <Route
               path="profile"
               element={<Profile />}
+            />
+            <Route
+              path="create"
+              element={<CreateBlog />}
             />
             <Route
               path="post/:postId"
