@@ -79,6 +79,7 @@ function editPost(req, res, next) {
           image: image,
           text: text,
           createdBy: item.createdBy,
+          desc: item.desc,
           createdAt: new Date(),
         };
       }

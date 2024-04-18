@@ -4,6 +4,8 @@ import PostCard from "../components/PostCard";
 
 const Home = () => {
   const [posts, setPosts] = useState();
+  let align = false
+
 
   async function fetchPosts() {
     const { data } = await axios.get("/api/posts");
@@ -15,8 +17,10 @@ const Home = () => {
 
   return (
     <div>
-      <ul className="flex flex-wrap w-3/4 mx-auto p-2">
-        {posts && posts.map((post) => <PostCard key={post.id} post={post} />)}
+      <ul className="mx-auto p-2">
+        {posts && posts.map((post) => {
+        align = !align
+        return <PostCard key={post.id} post={post} align={align}/>})}
       </ul>
     </div>
   );
