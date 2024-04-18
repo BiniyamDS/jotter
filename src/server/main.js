@@ -22,7 +22,6 @@ function createUser(req, res, next) {
 
 function authenticate(req, res, next) {
   const { username, password } = req.body;
-  // console.log(username, password);
   let { found, pass } = checkUsername(username);
   if (found && password === pass)
     return res.status(200).json({ username: username, success: true });
@@ -53,9 +52,7 @@ app.get("/api/post/:postId", getPost);
 
 function getPost(req, res, next) {
   const { postId } = req.params;
-  // console.log(typeof postId);
   const post = postMem.filter((post) => post.id === Number(postId));
-  // console.log(post)
   if (post) return res.status(200).json({ post: post });
   return res.status(404).json({ post: null });
 }
@@ -63,6 +60,20 @@ function getPost(req, res, next) {
 app.put("/api/post/:postId", editPost);
 
 app.post("/api/post/", createPost);
+
+app.delete("/api/post/:postId", deletePost);
+
+function deletePost(req, res, next) {
+  let { postId } = req.params;
+  postId = Number(postId);
+
+  try {
+    postMem = postMem.filter((post) => post.id !== postId);
+    return res.sendStatus(204);
+  } catch {
+    return res.sendStatus(404);
+  }
+}
 
 function createPost(req, res, next) {
   const { title, text, image, desc, user } = req.body;
@@ -86,7 +97,6 @@ function createPost(req, res, next) {
 function editPost(req, res, next) {
   let { postId } = req.params;
   const { title, text, image, desc } = req.body;
-  // console.log(title);
   postId = Number(postId);
 
   const post = postMem.filter((post) => post.id === postId);

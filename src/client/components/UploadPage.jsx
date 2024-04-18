@@ -22,9 +22,8 @@ const UploadPage = ({ post, handleAction }) => {
   async function handleSubmit(e) {
     e.preventDefault();
     setError(false);
-    // console.log('submitted')
     if (!titleState || !textState || !imageState) {
-      setError("All fields are manadatory!");
+      return setError("All fields are manadatory!");
     }
 
     try {
