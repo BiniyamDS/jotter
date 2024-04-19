@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
+  const { currentUser, logout, accessToken } = useAuth();
 
   function handleLogout() {
     logout();
@@ -14,6 +14,7 @@ const Profile = () => {
       <button className="btn" onClick={handleLogout}>
         Log out!
       </button>
+      <p>{accessToken}</p>
     </div>
   )
 }

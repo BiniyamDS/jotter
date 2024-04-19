@@ -1,8 +1,12 @@
 import express from "express";
 import ViteExpress from "vite-express";
 import users, { posts } from "./data.js";
+import {default as jwt } from 'jsonwebtoken'
+import { config } from "dotenv";
+config()
 
 let postMem = structuredClone(posts);
+// const jwt = require("jsonwebtoken");
 
 const app = express();
 
@@ -40,7 +44,14 @@ app.use(express.json());
 //   return { found: found, pass: password };
 // }
 
-// app.post("/api/login", authenticate);
+app.post("/api/login", (req, res) => {
+  const { email } = req.body;
+  // console.log('here')
+  const user = { email: email };
+  const accessToken = jwt.sign(user, process.env.VITE_ACCESS_TOKEN_SECRET);
+  console.log(accessToken)
+  res.json({ accessToken: accessToken });
+});
 
 // app.post("/api/register", createUser);
 

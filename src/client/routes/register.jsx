@@ -23,7 +23,7 @@ const Register = () => {
       return setError("Passwords do not match!");
     }
     try {
-      const response = await register(nameRef.current.value, passwordRef.current.value);
+      await register(nameRef.current.value, passwordRef.current.value);
       setLoading(true)
       navigate('/')
     } catch (err){
