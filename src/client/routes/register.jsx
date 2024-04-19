@@ -9,7 +9,7 @@ const Register = () => {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const [error, setError] = useState();
-  const { register } = useAuth();
+  const { register, currentUser } = useAuth();
   const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate();
@@ -23,11 +23,12 @@ const Register = () => {
       return setError("Passwords do not match!");
     }
     try {
-      await register(nameRef.current.value, passwordRef.current.value);
+      const response = await register(nameRef.current.value, passwordRef.current.value);
       setLoading(true)
-      navigate('/login')
-    } catch {
+      navigate('/')
+    } catch (err){
       setError("Failed to create account");
+      console.log(err)
     }
 
     setLoading(false)
@@ -38,6 +39,7 @@ const Register = () => {
       <div className="flex flex-col">
         <h1 className="text-4xl m-2 mx-auto">Register</h1>
         {error && <span className="error">{error}</span>}
+        {/* {currentUser.email} */}
         <form className="p-2 flex flex-col">
           <label htmlFor="username">Username</label>
           <input

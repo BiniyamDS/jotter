@@ -8,7 +8,7 @@ const CreateBlog = () => {
   async function handleAction(content) {
     return await axios.post(`/api/post/`, {
       ...content,
-      user: currentUser.username,
+      user: currentUser.email,
     });
   }
   const data = { title: "", desc: "", image: "", text: "" };

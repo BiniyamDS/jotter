@@ -36,7 +36,7 @@ const Content = ({ post }) => {
   }
 
   useEffect(() => {
-    if (currentUser.username === createdBy) {
+    if (currentUser.email === createdBy) {
       setCanEdit(true);
     }
   }, []);

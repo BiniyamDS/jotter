@@ -12,7 +12,7 @@ const YourPosts = () => {
   async function fetchPosts() {
     const { data } = await axios.get("/api/posts");
     const userPosts = data.filter(
-      (post) => post.createdBy === currentUser.username
+      (post) => post.createdBy === currentUser.email
     );
     setPosts(userPosts);
   }

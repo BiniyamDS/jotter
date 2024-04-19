@@ -7,7 +7,7 @@ a simple blogging application where users can register, login, setup their blog 
 - [x] Make all routes protected
 - [x] Implement log out
 - [x] Paint dashboard
-- [ ] Change authentication to firebase
+- [x] Change authentication to firebase
 - [ ] Implement JWT
 - [ ] Implement Postgres database
 - [ ] UI improvement

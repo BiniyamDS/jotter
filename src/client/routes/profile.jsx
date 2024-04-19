@@ -7,11 +7,10 @@ const Profile = () => {
 
   function handleLogout() {
     logout();
-    navigate("/login");
   }
 
   return (
-    <div>Profile page for {currentUser && currentUser.username}!{" "}
+    <div>Profile page for {currentUser.email}!{" "}
       <button className="btn" onClick={handleLogout}>
         Log out!
       </button>

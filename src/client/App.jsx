@@ -11,6 +11,7 @@ import Profile from "./routes/profile";
 import Post from "./routes/post";
 import EditBlog from "./routes/editBlog";
 import CreateBlog from "./routes/createBlog";
+import ForgotPassword from "./routes/forgotPassword";
 
 const App = () => {
   return (
@@ -51,6 +52,10 @@ const App = () => {
         <Route
           path="/login"
           element={<Login />}
+        />
+        <Route
+          path="/forgot-password"
+          element={<ForgotPassword />}
         />
         <Route
           path="/register"
