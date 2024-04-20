@@ -14,8 +14,8 @@ const Content = ({ post }) => {
     "Saturday",
   ];
 
-  const { id, title, text, createdBy, createdAt } = post;
-  const cTime = new Date(createdAt);
+  const { post_id, title, content, user_id, created_at } = post;
+  const cTime = new Date(created_at);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState()
@@ -23,12 +23,12 @@ const Content = ({ post }) => {
   const [canEdit, setCanEdit] = useState(false);
 
   function handleClick() {
-    navigate(`/edit/${id}`, { state: post });
+    navigate(`/edit/${post_id}`, { state: post });
   }
 
   async function handlDelete() {
     try {
-      await axios.delete(`/api/post/${id}`, {headers: {
+      await axios.delete(`/api/post/${post_id}`, {headers: {
         Authorization: `Bearer ${ await currentUser.getIdToken()}`, // Attach the token as a Bearer token
       },})
       navigate('/myPosts')
@@ -38,7 +38,7 @@ const Content = ({ post }) => {
   }
 
   useEffect(() => {
-    if (currentUser.email === createdBy) {
+    if (currentUser.email === user_id) {
       setCanEdit(true);
     }
   }, []);
@@ -66,12 +66,12 @@ const Content = ({ post }) => {
         )}
       </div>
       <p className="text-gray-500">
-        By {createdBy}, on{" "}
+        By {user_id}, on{" "}
         {`${weekdays[cTime.getDay()]}, ${cTime.toLocaleString("default", {
           month: "long",
         })} ${cTime.getDate()}, ${cTime.getFullYear()}`}
       </p>
-      <p className="pt-4 text-justify whitespace-pre-line">{text}</p>
+      <p className="pt-4 text-justify whitespace-pre-line">{content}</p>
     </div>
   );
 };

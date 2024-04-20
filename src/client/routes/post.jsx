@@ -12,7 +12,7 @@ const Post = () => {
   useEffect(() => {
     async function fetchPost() {
       try {
-        console.log("hello");
+        // console.log("hello");
         const { data } = await axios.get(`/api/post/${postId}`, {
           headers: {
             Authorization: `Bearer ${await currentUser.getIdToken()}`, // Attach the token as a Bearer token

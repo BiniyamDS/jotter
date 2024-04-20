@@ -3,8 +3,8 @@ import ViteExpress from "vite-express";
 import users, { posts } from "./data.js";
 import { config } from "dotenv";
 import admin from "firebase-admin";
+import pkg from "pg";
 config();
-
 import firebase_service_account from "../../firebase_service_account.json" assert { type: "json" };
 
 // initialize firebase admin
@@ -12,23 +12,32 @@ admin.initializeApp({
   credential: admin.credential.cert(firebase_service_account),
 });
 
-let postMem = structuredClone(posts);
+/// initialize and connect to psql
+const { Pool } = pkg;
+const credentials = {
+  user: process.env.VITE_DB_USER,
+  host: process.env.VITE_,
+  database: process.env.VITE_DB,
+  password: process.env.VITE_DB_PASSWORD,
+  port: 5432,
+};
 
+const pool = new Pool(credentials);
+
+// temporary posts object
+let postMem = structuredClone(posts);
 const app = express();
 app.use(express.json());
-// app.post("/api/register", createUser);
 
-app.get("/api/posts", validateToken, (req, res) => {
-  // console.log('Received request')
-  res.json(postMem);
+//// api endpoints
+app.get("/api/posts", validateToken, async (req, res) => {
+  const { rows } = await pool.query("select * from posts");
+  // console.log(result.rows)
+  res.json(rows);
 });
-
 app.get("/api/post/:postId", validateToken, getPost);
-
 app.put("/api/post/:postId", validateToken, editPost);
-
 app.post("/api/post/", validateToken, createPost);
-
 app.delete("/api/post/:postId", validateToken, deletePost);
 
 // Middle ware functions
@@ -38,7 +47,7 @@ async function validateToken(req, res, next) {
   if (!idToken) {
     return res.status(401).send("Unauthorized");
   }
-  idToken = idToken.split(" ")[1]
+  idToken = idToken.split(" ")[1];
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     req.user = decodedToken; // Attach decoded token to request object
@@ -49,10 +58,12 @@ async function validateToken(req, res, next) {
   }
 }
 
-function getPost(req, res, next) {
+async function getPost(req, res, next) {
   const { postId } = req.params;
-  const post = postMem.filter((post) => post.id === Number(postId));
-  if (post) return res.status(200).json({ post: post });
+  const { rows } = await pool.query(
+    `select * from posts where post_id=${Number(postId)}`
+  );
+  if (rows) return res.status(200).json({ post: rows });
   return res.status(404).json({ post: null });
 }
 function deletePost(req, res, next) {
@@ -67,21 +78,22 @@ function deletePost(req, res, next) {
   }
 }
 
-function createPost(req, res, next) {
+async function createPost(req, res, next) {
   const { title, text, image, desc, user } = req.body;
-  const newId = Math.floor(Math.random() * 1000);
+  console.log("in create");
   try {
-    postMem.push({
-      id: newId,
-      title: title,
-      image: image,
-      text: text,
-      createdBy: user,
-      desc: desc,
-      createdAt: new Date(),
-    });
-    return res.status(201).json({ success: true, id: newId });
-  } catch {
+    const query_text = `insert into posts
+    (title, image_url, content, content_desc, user_id)
+    values ($1, $2, $3, $4, $5)
+    returning post_id
+    `;
+
+    const values = [title, image, text, desc, user];
+    const { rows } = await pool.query(query_text, values);
+    console.log(rows);
+    return res.status(201).json({ success: true, id: rows[0].post_id });
+  } catch (err) {
+    console.log(`Error: ${err}`);
     return res.status(404).json({ success: false });
   }
 }

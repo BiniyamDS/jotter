@@ -24,7 +24,7 @@ const Home = () => {
       <ul className="mx-auto p-2">
         {posts && posts.map((post) => {
         align = !align
-        return <PostCard key={post.id} post={post} align={align}/>})}
+        return <PostCard key={post.post_id} post={post} align={align}/>})}
       </ul>
     </div>
   );

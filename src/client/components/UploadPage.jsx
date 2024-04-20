@@ -29,7 +29,7 @@ const UploadPage = ({ post, handleAction }) => {
     try {
       // await axios.put(`/api/edit/${id}`, );
       const {data} = await handleAction(content)
-      console.log(data)
+      // console.log(data)
       navigate(`/post/${data.id}`)
     } catch(err) {
       console.log(err)
