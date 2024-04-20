@@ -9,7 +9,9 @@ const CreateBlog = () => {
     return await axios.post(`/api/post/`, {
       ...content,
       user: currentUser.email,
-    });
+    }, {headers: {
+      Authorization: `Bearer ${ await currentUser.getIdToken()}`, // Attach the token as a Bearer token
+    },});
   }
   const data = { title: "", desc: "", image: "", text: "" };
   return (

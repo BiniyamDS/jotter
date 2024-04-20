@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import Card from "../components/Card";

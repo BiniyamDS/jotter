@@ -8,6 +8,6 @@ a simple blogging application where users can register, login, setup their blog 
 - [x] Implement log out
 - [x] Paint dashboard
 - [x] Change authentication to firebase
-- [ ] Implement JWT
+- [x] Implement JWT
 - [ ] Implement Postgres database
 - [ ] UI improvement

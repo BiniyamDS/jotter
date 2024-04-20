@@ -15,6 +15,7 @@ dist-ssr
 
 # Editor directories and files
 test
+firebase_service_account.json
 .vscode/*
 !.vscode/extensions.json
 .idea

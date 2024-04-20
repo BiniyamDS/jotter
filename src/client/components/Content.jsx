@@ -28,7 +28,9 @@ const Content = ({ post }) => {
 
   async function handlDelete() {
     try {
-      await axios.delete(`/api/post/${id}`)
+      await axios.delete(`/api/post/${id}`, {headers: {
+        Authorization: `Bearer ${ await currentUser.getIdToken()}`, // Attach the token as a Bearer token
+      },})
       navigate('/myPosts')
     } catch {
       setError('Failed to delete post')

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect, useRef } from "react";
 // import { createUser, login } from "../auth";
 import { auth } from "../firebase";
 import axios from "axios";
@@ -30,14 +30,13 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setCurrentUser(user);
+      // console.log(await user.getIdToken())
       setLoading(false);
     });
     return unsubscribe;
   }, []);
-
-  
 
   // async function getToken() {
   //   console.log(currentUser);
@@ -48,8 +47,6 @@ export function AuthProvider({ children }) {
   //     setAccessToken(data.accessToken);
   //   }
   // }
-
-
 
   async function register(email, password) {
     // return await createUser(email, password);

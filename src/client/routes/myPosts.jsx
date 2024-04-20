@@ -10,7 +10,9 @@ const YourPosts = () => {
   let align = false;
 
   async function fetchPosts() {
-    const { data } = await axios.get("/api/posts");
+    const { data } = await axios.get("/api/posts", {headers: {
+      Authorization: `Bearer ${ await currentUser.getIdToken()}`, // Attach the token as a Bearer token
+    },});
     const userPosts = data.filter(
       (post) => post.createdBy === currentUser.email
     );

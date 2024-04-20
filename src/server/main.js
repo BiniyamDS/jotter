@@ -1,65 +1,53 @@
 import express from "express";
 import ViteExpress from "vite-express";
 import users, { posts } from "./data.js";
-import {default as jwt } from 'jsonwebtoken'
 import { config } from "dotenv";
-config()
+import admin from "firebase-admin";
+config();
 
-let postMem = structuredClone(posts);
-// const jwt = require("jsonwebtoken");
+import firebase_service_account from "../../firebase_service_account.json" assert { type: "json" };
 
-const app = express();
-
-app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
-
-// function createUser(req, res, next) {
-//   const { username, password } = req.body;
-//   const { found } = checkUsername(username);
-
-//   if (found) return res.status(409).json({ success: false });
-
-//   users.push({ username: username, password: password });
-//   console.log(users);
-//   res.status(201).json({ success: true });
-// }
-
-// function authenticate(req, res, next) {
-//   const { username, password } = req.body;
-//   let { found, pass } = checkUsername(username);
-//   if (found && password === pass)
-//     return res.status(200).json({ username: username, success: true });
-//   res.status(403).json({ success: false });
-// }
-
-// function checkUsername(name) {
-//   let found = false;
-//   let password = "";
-//   users.forEach((user) => {
-//     if (user.username === name) {
-//       password = user.password;
-//       found = true;
-//     }
-//   });
-//   return { found: found, pass: password };
-// }
-
-app.post("/api/login", (req, res) => {
-  const { email } = req.body;
-  // console.log('here')
-  const user = { email: email };
-  const accessToken = jwt.sign(user, process.env.VITE_ACCESS_TOKEN_SECRET);
-  console.log(accessToken)
-  res.json({ accessToken: accessToken });
+// initialize firebase admin
+admin.initializeApp({
+  credential: admin.credential.cert(firebase_service_account),
 });
 
+let postMem = structuredClone(posts);
+
+const app = express();
+app.use(express.json());
 // app.post("/api/register", createUser);
 
-app.get("/api/posts", (req, res) => {
+app.get("/api/posts", validateToken, (req, res) => {
+  // console.log('Received request')
   res.json(postMem);
 });
 
-app.get("/api/post/:postId", getPost);
+app.get("/api/post/:postId", validateToken, getPost);
+
+app.put("/api/post/:postId", validateToken, editPost);
+
+app.post("/api/post/", validateToken, createPost);
+
+app.delete("/api/post/:postId", validateToken, deletePost);
+
+// Middle ware functions
+
+async function validateToken(req, res, next) {
+  let idToken = req.headers.authorization;
+  if (!idToken) {
+    return res.status(401).send("Unauthorized");
+  }
+  idToken = idToken.split(" ")[1]
+  try {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    req.user = decodedToken; // Attach decoded token to request object
+    next();
+  } catch (error) {
+    console.error("Error verifying Firebase ID token:", error);
+    return res.status(401).send("Unauthorized");
+  }
+}
 
 function getPost(req, res, next) {
   const { postId } = req.params;
@@ -67,13 +55,6 @@ function getPost(req, res, next) {
   if (post) return res.status(200).json({ post: post });
   return res.status(404).json({ post: null });
 }
-
-app.put("/api/post/:postId", editPost);
-
-app.post("/api/post/", createPost);
-
-app.delete("/api/post/:postId", deletePost);
-
 function deletePost(req, res, next) {
   let { postId } = req.params;
   postId = Number(postId);
@@ -135,3 +116,38 @@ function editPost(req, res, next) {
 ViteExpress.listen(app, 3000, () =>
   console.log("Server is listening on port 3000...")
 );
+
+////  -------------- old custom auth server -------------------------
+
+// app.use(express.urlencoded({ extended: true }));
+
+// function createUser(req, res, next) {
+//   const { username, password } = req.body;
+//   const { found } = checkUsername(username);
+
+//   if (found) return res.status(409).json({ success: false });
+
+//   users.push({ username: username, password: password });
+//   console.log(users);
+//   res.status(201).json({ success: true });
+// }
+
+// function authenticate(req, res, next) {
+//   const { username, password } = req.body;
+//   let { found, pass } = checkUsername(username);
+//   if (found && password === pass)
+//     return res.status(200).json({ username: username, success: true });
+//   res.status(403).json({ success: false });
+// }
+
+// function checkUsername(name) {
+//   let found = false;
+//   let password = "";
+//   users.forEach((user) => {
+//     if (user.username === name) {
+//       password = user.password;
+//       found = true;
+//     }
+//   });
+//   return { found: found, pass: password };
+// }
