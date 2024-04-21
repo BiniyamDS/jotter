@@ -21,3 +21,7 @@
 .nav {
     @apply p-6 text-sm hover:shadow-lg h-full rounded-lg
 }
+
+p {
+    @apply font-garmond text-xl
+}
