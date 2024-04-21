@@ -10,5 +10,6 @@ a simple blogging application where users can register, login, setup their blog 
 - [x] Change authentication to firebase
 - [x] Implement JWT
 - [x] Implement Postgres database
-- [ ] Perform uid check before performing data changes like delete and update
+- [x] Perform uid check before performing data changes like delete and update
+- [x] Add admin account
 - [ ] UI improvement

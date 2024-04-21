@@ -1,6 +1,5 @@
 import express from "express";
 import ViteExpress from "vite-express";
-import users, { posts } from "./data.js";
 import { config } from "dotenv";
 import admin from "firebase-admin";
 import pkg from "pg";
@@ -25,23 +24,21 @@ const credentials = {
 const pool = new Pool(credentials);
 
 // temporary posts object
-let postMem = structuredClone(posts);
 const app = express();
 app.use(express.json());
 
 //// api endpoints
 app.get("/api/posts", validateToken, async (req, res) => {
   const { rows } = await pool.query("select * from posts");
-  // console.log(result.rows)
   res.json(rows);
 });
 app.get("/api/post/:postId", validateToken, getPost);
-app.put("/api/post/:postId", validateToken, editPost);
+app.put("/api/post/:postId", validateToken, validateUser, editPost);
 app.post("/api/post/", validateToken, createPost);
-app.delete("/api/post/:postId", validateToken, deletePost);
+app.delete("/api/post/:postId", validateToken, validateUser, deletePost);
 
 // Middle ware functions
-
+/// validate firebase jwt tokens
 async function validateToken(req, res, next) {
   let idToken = req.headers.authorization;
   if (!idToken) {
@@ -50,11 +47,29 @@ async function validateToken(req, res, next) {
   idToken = idToken.split(" ")[1];
   try {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
-    req.user = decodedToken; // Attach decoded token to request object
+    req.user = decodedToken.uid; // Attach decoded token to request object
     next();
   } catch (error) {
     console.error("Error verifying Firebase ID token:", error);
     return res.status(401).send("Unauthorized");
+  }
+}
+
+/// validate the level of access of the user
+async function validateUser(req, res, next) {
+  if (req.user === process.env.VITE_ADMIN_TOKEN) {
+    next();
+  } else {
+    const { postId } = req.params;
+
+    const { rows } = await pool.query(
+      `select uuid from posts where post_id=${postId}`
+    );
+    if (rows[0].uuid === req.user) {
+      next();
+    } else {
+      res.sendStatus(401);
+    }
   }
 }
 
@@ -71,28 +86,25 @@ async function deletePost(req, res, next) {
   postId = Number(postId);
 
   try {
-    // postMem = postMem.filter((post) => post.id !== postId);
-    await pool.query(`delete from posts where post_id=${postId}`)
+    await pool.query(`delete from posts where post_id=${postId}`);
     return res.sendStatus(204);
-  } catch(err) {
-    console.log(err)
+  } catch (err) {
+    console.log(err);
     return res.sendStatus(404);
   }
 }
 
 async function createPost(req, res, next) {
   const { title, text, image, desc, user } = req.body;
-  console.log("in create");
   try {
     const query_text = `insert into posts
-    (title, image_url, content, content_desc, user_id)
-    values ($1, $2, $3, $4, $5)
+    (title, image_url, content, content_desc, user_id, uuid)
+    values ($1, $2, $3, $4, $5, $6)
     returning post_id
     `;
 
-    const values = [title, image, text, desc, user];
+    const values = [title, image, text, desc, user, req.user];
     const { rows } = await pool.query(query_text, values);
-    console.log(rows);
     return res.status(201).json({ success: true, id: rows[0].post_id });
   } catch (err) {
     console.log(`Error: ${err}`);
