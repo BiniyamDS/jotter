@@ -3,14 +3,14 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const UploadPage = ({ post, handleAction }) => {
-  const { title, image, text, desc } = post;
+  const { title, image_url, content, content_desc } = post;
   const [titleState, setTitle] = useState(title);
-  const [descState, setDesc] = useState(desc);
-  const [imageState, setImage] = useState(image);
-  const [textState, setText] = useState(text);
+  const [descState, setDesc] = useState(content_desc);
+  const [imageState, setImage] = useState(image_url);
+  const [textState, setText] = useState(content);
   const [error, setError] = useState(false);
 
-  const content = {
+  const contents = {
     title: titleState,
     image: imageState,
     text: textState,
@@ -28,7 +28,7 @@ const UploadPage = ({ post, handleAction }) => {
 
     try {
       // await axios.put(`/api/edit/${id}`, );
-      const {data} = await handleAction(content)
+      const {data} = await handleAction(contents)
       // console.log(data)
       navigate(`/post/${data.id}`)
     } catch(err) {

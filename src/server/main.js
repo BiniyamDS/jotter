@@ -66,14 +66,16 @@ async function getPost(req, res, next) {
   if (rows) return res.status(200).json({ post: rows });
   return res.status(404).json({ post: null });
 }
-function deletePost(req, res, next) {
+async function deletePost(req, res, next) {
   let { postId } = req.params;
   postId = Number(postId);
 
   try {
-    postMem = postMem.filter((post) => post.id !== postId);
+    // postMem = postMem.filter((post) => post.id !== postId);
+    await pool.query(`delete from posts where post_id=${postId}`)
     return res.sendStatus(204);
-  } catch {
+  } catch(err) {
+    console.log(err)
     return res.sendStatus(404);
   }
 }
@@ -98,31 +100,25 @@ async function createPost(req, res, next) {
   }
 }
 
-function editPost(req, res, next) {
+async function editPost(req, res, next) {
   let { postId } = req.params;
   const { title, text, image, desc } = req.body;
   postId = Number(postId);
 
-  const post = postMem.filter((post) => post.id === postId);
-
-  if (post) {
-    postMem = postMem.map((item) => {
-      if (item.id === postId) {
-        return {
-          id: item.id,
-          title: title,
-          image: image,
-          text: text,
-          createdBy: item.createdBy,
-          desc: desc,
-          createdAt: new Date(),
-        };
-      }
-      return item;
-    });
+  try {
+    const query_text = `update posts set title=$1, content=$2, image_url=$3, content_desc=$4 where post_id=$5`;
+    const response = await pool.query(query_text, [
+      title,
+      text,
+      image,
+      desc,
+      postId,
+    ]);
     return res.status(200).json({ success: true, id: postId });
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ success: false });
   }
-  return res.status(404).json({ success: false });
 }
 
 ViteExpress.listen(app, 3000, () =>

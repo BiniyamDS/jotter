@@ -9,5 +9,6 @@ a simple blogging application where users can register, login, setup their blog 
 - [x] Paint dashboard
 - [x] Change authentication to firebase
 - [x] Implement JWT
-- [ ] Implement Postgres database
+- [x] Implement Postgres database
+- [ ] Perform uid check before performing data changes like delete and update
 - [ ] UI improvement

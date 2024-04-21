@@ -9,7 +9,7 @@ const EditBlog = () => {
   const data = location.state;
 
   async function handleAction(content) {
-    return await axios.put(`/api/post/${data.id}`, content, {
+    return await axios.put(`/api/post/${data.post_id}`, content, {
       headers: {
         Authorization: `Bearer ${await currentUser.getIdToken()}`, // Attach the token as a Bearer token
       },
