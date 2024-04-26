@@ -12,4 +12,6 @@ a simple blogging application where users can register, login, setup their blog 
 - [x] Implement Postgres database
 - [x] Perform uid check before performing data changes like delete and update
 - [x] Add admin account
+- [x] Improve navbar
 - [ ] UI improvement
+- [ ] Deploy live

@@ -19,7 +19,7 @@
 }
 
 .nav {
-    @apply p-6 text-sm hover:shadow-lg h-full rounded-lg
+    @apply p-6 text-lg font-lato h-full hover:bg-slate-50
 }
 
 p {

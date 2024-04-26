@@ -8,8 +8,10 @@ import NavBar from "../components/NavBar";
 const Root = () => {
   return (
     <div>
-      <NavBar/>
-      <Outlet />
+      <NavBar />
+      <div className="pt-24 relative">
+        <Outlet />
+      </div>
     </div>
   );
 };

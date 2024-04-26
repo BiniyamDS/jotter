@@ -8,6 +8,7 @@ export default {
     extend: {
       fontFamily: {
         'garmond': ['EB Garamond', 'sans-serif'],
+        'lato': ['Lato', 'sans-serif']
       }
     },
   },
