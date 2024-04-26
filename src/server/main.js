@@ -4,11 +4,16 @@ import { config } from "dotenv";
 import admin from "firebase-admin";
 import pkg from "pg";
 config();
-import firebase_service_account from "../../firebase_service_account.json" assert { type: "json" };
+
+// decode firebase admin credentials from base64encoded string
+const base64Encoded_firebase = process.env.VITE_FIREBASE_SERVICE_ACCOUNT
+
+const decodedString_firebase = Buffer.from(base64Encoded_firebase, 'base64').toString('utf8');
+const firebase_service_json = JSON.parse(decodedString_firebase);
 
 // initialize firebase admin
 admin.initializeApp({
-  credential: admin.credential.cert(firebase_service_account),
+  credential: admin.credential.cert(firebase_service_json),
 });
 
 /// initialize and connect to psql

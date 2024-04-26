@@ -1,23 +1,38 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const NavBar = () => {
   const { currentUser } = useAuth();
   return (
-    <div className="fixed bg-white shadow-md z-50 w-full px-5 flex justify-between items-center">
+    <nav className="fixed bg-white shadow-md z-50 w-full px-5 flex justify-between items-center">
       <ul className="flex mx-auto">
         <li>
-          <Link to="/"><div className="nav">Home</div></Link>
+          <NavLink
+            to="/"
+            className={({ isActive }) => isActive && "text-gray-400"}
+          >
+            <div className="nav">Home</div>
+          </NavLink>
         </li>
         <li>
-          <Link to="/myPosts"><div className="nav">Your posts</div></Link>
+          <NavLink
+            to="/myPosts"
+            className={({ isActive }) => isActive && "text-gray-400"}
+          >
+            <div className="nav">Your posts</div>
+          </NavLink>
         </li>
         <li>
-          <Link to="/profile"><div className="nav">Profile</div></Link>
+          <NavLink
+            to="/profile"
+            className={({ isActive }) => isActive && "text-gray-400"}
+          >
+            <div className="nav">Profile</div>
+          </NavLink>
         </li>
         <li className="text-gray-500 h-full p-6 ml-10">{currentUser.email}</li>
       </ul>
-    </div>
+    </nav>
   );
 };
 
