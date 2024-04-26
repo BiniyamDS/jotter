@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 .btn {
-    @apply bg-blue-500 p-3 m-2 mx-auto hover:bg-blue-600 rounded-lg text-white
+  @apply bg-blue-500 p-3 m-2 mx-auto hover:bg-blue-600 rounded-lg text-white disabled:bg-gray-500 disabled:cursor-not-allowed;
 }
 
 .card {
-    @apply p-5 pt-8 w-1/2 rounded-md border-2 flex flex-col max-w-96 min-w-64;
+  @apply p-5 pt-8 w-1/2 rounded-md border-2 flex flex-col max-w-96 min-w-64;
 }
 
 .error {
-    @apply bg-red-200 m-2 w-full p-4 border-2 border-gray-300 rounded-md text-red-950 text-lg
+  @apply bg-red-200 m-2 w-full p-4 border-2 border-gray-300 rounded-md text-red-950 text-lg;
 }
 
 .input {
-    @apply border-2 my-2 h-10 w-full rounded-md text-slate-700 p-3
+  @apply border-2 my-2 h-10 w-full rounded-md text-slate-700 p-3;
 }
 
 .nav {
-    @apply p-6 text-lg font-lato h-full hover:bg-slate-50
+  @apply p-6 text-lg font-lato h-full hover:bg-slate-50;
 }
 
 p {
-    @apply font-garmond text-xl
+  @apply font-garmond text-xl;
 }

@@ -2,14 +2,15 @@ import { useNavigate, Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import Card from "../components/Card";
 import { useAuth } from "../contexts/AuthContext";
+import LoadingButton from "../components/LoadingButton";
 
 const Register = () => {
   const nameRef = useRef();
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const [error, setError] = useState();
-  const { register, currentUser } = useAuth();
-  const [loading, setLoading] = useState(false)
+  const { register} = useAuth();
+  // const [loading, setLoading] = useState(false)
 
   const navigate = useNavigate();
   async function handleSubmit(e) {
@@ -23,14 +24,14 @@ const Register = () => {
     }
     try {
       await register(nameRef.current.value, passwordRef.current.value);
-      setLoading(true)
+      // setLoading(true)
       navigate('/')
     } catch (err){
       setError("Failed to create account");
       console.log(err)
     }
 
-    setLoading(false)
+    // setLoading(false)
   }
 
   return (
@@ -64,14 +65,15 @@ const Register = () => {
             className="input"
             ref={passwordConfirmRef}
           />
-          <button
+          {/* <button
             type="submit"
             className="btn w-full"
             disabled={loading}
             onClick={handleSubmit}
           >
             Sign up
-          </button>
+          </button> */}
+          <LoadingButton name='Sign up' handleAction={handleSubmit}/>
         </form>
         <div className="mx-auto">
           <p>

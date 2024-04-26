@@ -4,7 +4,7 @@ const Card = ({children}) => {
       <div className="card">
         <div className="mx-auto">
           
-          {/* <h1 className="text-xl text-gray-500">Welcome to Jotter!</h1> */}
+          <h1 className="text-xl text-gray-500">Welcome to Jotter!</h1>
         </div>
         {children}
       </div>

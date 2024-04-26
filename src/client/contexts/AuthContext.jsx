@@ -1,7 +1,5 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
-// import { createUser, login } from "../auth";
 import { auth } from "../firebase";
-import axios from "axios";
 
 const AuthContext = createContext();
 
@@ -12,13 +10,9 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  const [accessToken, setAccessToken] = useState();
-  const [refreshToken, setRefreshToken] = useState();
 
   async function signIn(email, password) {
-    // console.log('Signed in')
     return auth.signInWithEmailAndPassword(email, password);
-    // return await getToken();
   }
 
   function resetPassword(email) {
@@ -32,25 +26,11 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       setCurrentUser(user);
-      // console.log(await user.getIdToken())
       setLoading(false);
     });
     return unsubscribe;
   }, []);
-
-  // async function getToken() {
-  //   console.log(currentUser);
-  //   if (currentUser) {
-  //     const { data } = await axios.post("/api/login", {
-  //       email: currentUser.email,
-  //     });
-  //     setAccessToken(data.accessToken);
-  //   }
-  // }
-
   async function register(email, password) {
-    // return await createUser(email, password);
-    // return auth.createUserWithEmailAndPassword(email, password);
     return auth.createUserWithEmailAndPassword(email, password);
   }
 
@@ -60,7 +40,6 @@ export function AuthProvider({ children }) {
     register,
     logout,
     resetPassword,
-    // accessToken,
   };
   return (
     <AuthContext.Provider value={value}>

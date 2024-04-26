@@ -2,13 +2,14 @@ import { useNavigate, Link } from "react-router-dom";
 import { useState, useRef } from "react";
 import Card from "../components/Card";
 import { useAuth } from "../contexts/AuthContext";
+import LoadingButton from "../components/LoadingButton";
 
 const Login = () => {
   const nameRef = useRef();
   const passwordRef = useRef();
   const [error, setError] = useState();
-  const { signIn, currentUser } = useAuth();
-  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
+  // const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   async function handleSubmit(e) {
@@ -19,14 +20,14 @@ const Login = () => {
     }
 
     try {
+      // setLoading(true);
       await signIn(nameRef.current.value, passwordRef.current.value);
-      setLoading(true);
       navigate("/");
     } catch {
       setError("Incorrect username or password");
     }
 
-    setLoading(false);
+    // setLoading(false);
   }
 
   return (
@@ -52,12 +53,21 @@ const Login = () => {
             className="input"
             ref={passwordRef}
           />
-          <button type="submit" className="btn w-full" onClick={handleSubmit}>
+          {/* <button
+            type="submit"
+            className="btn w-full"
+            onClick={handleSubmit}
+            disabled={loading}
+          >
             Log in
-          </button>
+          </button> */}
+          <LoadingButton name='Log in' handleAction={handleSubmit}/>
         </form>
         <div className="mx-auto">
-          <Link className="text-blue-700 hover:underline" to="/forgot-password">
+          <Link
+            className="text-blue-700 hover:underline"
+            to="/forgot-password"
+          >
             Forgot Password?
           </Link>
         </div>
@@ -65,7 +75,10 @@ const Login = () => {
       <div className="mx-auto">
         <p>
           Don't have an account?{" "}
-          <Link className="text-blue-700 hover:underline" to="/register">
+          <Link
+            className="text-blue-700 hover:underline"
+            to="/register"
+          >
             Sign up
           </Link>
         </p>
