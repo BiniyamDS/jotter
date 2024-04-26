@@ -9,7 +9,7 @@ const NavBar = () => {
         <li>
           <NavLink
             to="/"
-            className={({ isActive }) => isActive && "text-gray-400"}
+            className={({ isActive }) => isActive ? "text-gray-400" : undefined}
           >
             <div className="nav">Home</div>
           </NavLink>
@@ -17,7 +17,7 @@ const NavBar = () => {
         <li>
           <NavLink
             to="/myPosts"
-            className={({ isActive }) => isActive && "text-gray-400"}
+            className={({ isActive }) => isActive ? "text-gray-400" : undefined}
           >
             <div className="nav">Your posts</div>
           </NavLink>
@@ -25,7 +25,7 @@ const NavBar = () => {
         <li>
           <NavLink
             to="/profile"
-            className={({ isActive }) => isActive && "text-gray-400"}
+            className={({ isActive }) => isActive ? "text-gray-400" : undefined}
           >
             <div className="nav">Profile</div>
           </NavLink>

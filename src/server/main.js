@@ -18,15 +18,19 @@ admin.initializeApp({
 
 /// initialize and connect to psql
 const { Pool } = pkg;
-const credentials = {
-  user: process.env.VITE_DB_USER,
-  host: process.env.VITE_,
-  database: process.env.VITE_DB,
-  password: process.env.VITE_DB_PASSWORD,
-  port: 5432,
-};
+// const credentials = {
+//   user: process.env.VITE_DB_USER,
+//   host: process.env.VITE_DB_HOST,
+//   database: process.env.VITE_DB,
+//   password: process.env.VITE_DB_PASSWORD,
+//   port: 5432,
+// };
 
-const pool = new Pool(credentials);
+// const pool = new Pool(credentials);
+const pool = new Pool({
+  connectionString: process.env.VITE_DB_URL
+  
+})
 
 // temporary posts object
 const app = express();
